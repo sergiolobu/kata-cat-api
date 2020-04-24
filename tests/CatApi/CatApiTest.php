@@ -1,6 +1,6 @@
 <?php
 
-namespace CatApi\Tests;
+namespace Tests\CatApi;
 
 use CatApi\CatApi;
 

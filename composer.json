@@ -1,4 +1,8 @@
 {
+    "name": "catApi kata",
+    "description": "kata about refactoring",
+    "type": "kata",
+
     "require": {
         "phpunit/phpunit": "~4.1"
     },
@@ -9,7 +13,7 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "": "tests/"
+            "tests\\": "tests/"
         }
     }
 }
