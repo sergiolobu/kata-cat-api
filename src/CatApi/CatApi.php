@@ -7,13 +7,13 @@ class CatApi
     public function getRandomImage()
     {
         $cache = new FileCache();
-        if (!$cache->isCacheValid()) {
-            return $cache->getCacheImage();
+        if (!$cache->isValid()) {
+            return $cache->getImage();
         }
 
         $catImage = $this->getCatImage();
 
-        $cache->setCacheImage($catImage);
+        $cache->setImage($catImage);
 
         return $catImage;
     }

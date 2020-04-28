@@ -16,17 +16,17 @@ class FileCache
         $this->cacheFilename = __DIR__ . '/../../cache/random';
     }
 
-    public function isCacheValid(): bool
+    public function isValid(): bool
     {
         return $this->existCache() || $this->cacheHasExpired();
     }
 
-    public function getCacheImage()
+    public function getImage()
     {
         return file_get_contents($this->cacheFilename);
     }
 
-    public function setCacheImage(string $catImage)
+    public function setImage(string $catImage)
     {
         file_put_contents($this->cacheFilename, $catImage);
 
