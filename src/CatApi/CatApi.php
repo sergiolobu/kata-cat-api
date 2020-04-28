@@ -22,9 +22,7 @@ class CatApi
     {
         $responseXml = (new CatImageHttpClient())->requestImage();
 
-        $responseElement = new \SimpleXMLElement($responseXml);
-
-        $catImage = (string)$responseElement->data->images[0]->image->url;
+        $catImage = (new CatImageXmlParser())->extractImage($responseXml);
 
         return $catImage;
     }
