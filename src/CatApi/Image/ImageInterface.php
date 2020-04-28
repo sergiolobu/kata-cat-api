@@ -4,5 +4,5 @@ namespace CatApi\Image;
 
 interface ImageInterface
 {
-    public function getImageUrl($cacheImageFilePath);
+    public function getImageUrl();
 }

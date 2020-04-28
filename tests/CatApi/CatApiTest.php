@@ -2,6 +2,7 @@
 
 namespace Tests\CatApi;
 
+use CatApi\Cache\ImageCache;
 use CatApi\CatApi;
 
 class CatApiTest extends \PHPUnit_Framework_TestCase
@@ -14,7 +15,9 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_fetches_a_random_url_of_a_cat_gif()
     {
-        $catApi = new CatApi();
+        $imageCache = new ImageCache();
+
+        $catApi = new CatApi($imageCache);
 
         $url = $catApi->getRandomImage();
 
@@ -24,7 +27,9 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_caches_a_random_cat_gif_url_for_3_seconds()
     {
-        $catApi = new CatApi();
+        $imageCache = new ImageCache();
+
+        $catApi = new CatApi($imageCache);
 
         $firstUrl = $catApi->getRandomImage();
         sleep(2);

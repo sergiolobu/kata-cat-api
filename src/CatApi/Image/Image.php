@@ -2,43 +2,48 @@
 
 namespace CatApi\Image;
 
-use CatApi\Image\ImageInterface;
+use CatApi\File\FileInterface;
+use CatApi\SimpleXmlElement;
 
 class Image implements ImageInterface
 {
-    public function getImageUrl($cacheImageFilePath)
+    protected $cacheImageFilePath;
+    protected $file;
+    protected $simpleXMlElement;
+
+    public function __construct(FileInterface $file, SimpleXmlElement $simpleXMlElement)
     {
-        $imageXml = $this->getImageXML();
+        $this->cacheImageFilePath = __DIR__ . '/../../../cache/random';
+        $this->file = $file;
+        $this->simpleXMlElement = $simpleXMlElement;
+    }
 
-        $this->checkIfImageXmlIsNullAndReturnDefaultImage($imageXml);
+    public function getImageUrl()
+    {
+        try {
+            $responseXml = $this->getResponseXML();
+        }catch (\Exception $e){
+            return 'http://cdn.my-cool-website.com/default.jpg';
+        }
 
-        $responseElement = new \SimpleXMLElement($imageXml);
+        $imageUrl =  $this->simpleXMlElement->getImageUrlOfXml($responseXml);
 
-        $imageUrl = (string) $responseElement->data->images[0]->image->url;
-
-        $this->setImageToCacheFile($cacheImageFilePath,$imageUrl);
+        $this->putImageInCacheFile($imageUrl);
 
         return $imageUrl;
     }
 
-    protected function getImageXML()
+    protected function getResponseXML()
     {
-        return @file_get_contents(
+        return $this->file->get(
             'http://thecatapi.com/api/images/get?format=xml&type=jpg'
         );
     }
 
-    protected function checkIfImageXmlIsNullAndReturnDefaultImage($imageXml)
+    protected function putImageInCacheFile(string $imageUrl)
     {
-        if (!$imageXml) {
-            return 'http://cdn.my-cool-website.com/default.jpg';
-        }
-    }
-
-    protected function setImageToCacheFile($cacheImageFilePath,string $imageUrl)
-    {
-        file_put_contents(
-            $cacheImageFilePath,
+        $this->file->put(
+            $this->cacheImageFilePath,
             $imageUrl
         );
     }

@@ -2,12 +2,21 @@
 
 namespace CatApi\Image;
 
-use CatApi\Image\ImageInterface;
+use CatApi\File\FileInterface;
 
 class CachedImage implements ImageInterface
 {
-    public function getImageUrl($cacheImageFilePath)
+    protected $cacheImageFilePath;
+    protected $file;
+
+    public function __construct(FileInterface $file)
     {
-        return file_get_contents($cacheImageFilePath);
+        $this->cacheImageFilePath = __DIR__ . '/../../../cache/random';
+        $this->file = $file;
+    }
+
+    public function getImageUrl()
+    {
+        return $this->file->get($this->cacheImageFilePath);
     }
 }
