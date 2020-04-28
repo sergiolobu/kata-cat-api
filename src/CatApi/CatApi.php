@@ -4,17 +4,20 @@ namespace CatApi;
 
 class CatApi
 {
+    /**
+     * @var CatImageCache
+     */
+    private $catImageCache;
+
+    public function __construct()
+    {
+        $this->catImageCache = new CatImageCache(new FileCache());
+    }
+
     public function getRandomImage()
     {
-        $cache = new FileCache();
-        if (!$cache->isValid()) {
-            return $cache->getImage();
-        }
-
-        $catImage = (new GetCatImage())->execute();
-
-        $cache->setImage($catImage);
-
-        return $catImage;
+        return $this->catImageCache->getImage(function () {
+            return (new GetCatImage())->execute();
+        });
     }
 }
