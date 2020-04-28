@@ -11,18 +11,9 @@ class CatApi
             return $cache->getImage();
         }
 
-        $catImage = $this->getCatImage();
+        $catImage = (new GetCatImage())->execute();
 
         $cache->setImage($catImage);
-
-        return $catImage;
-    }
-
-    private function getCatImage(): string
-    {
-        $responseXml = (new CatImageHttpClient())->requestImage();
-
-        $catImage = (new CatImageXmlParser())->extractImage($responseXml);
 
         return $catImage;
     }
